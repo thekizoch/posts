@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "Arrigo F.G. Cicero", "label": "Arrigo F.G. Cicero", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "label": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Olta Allkanjari", "label": "Olta Allkanjari", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Gian Maria Busetto", "label": "Gian Maria Busetto", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Tommaso Cai", "label": "Tommaso Cai", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Gaetano Largan\u00e0", "label": "Gaetano Largan\u00e0", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Vittorio Magri", "label": "Vittorio Magri", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Gianpaolo Perletti", "label": "Gianpaolo Perletti", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Francesco Saverio Robustelli Della Cuna", "label": "Francesco Saverio Robustelli Della Cuna", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Giorgio Ivan Russo", "label": "Giorgio Ivan Russo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Kostantinos Stamatiou", "label": "Kostantinos Stamatiou", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Alberto Trinchieri", "label": "Alberto Trinchieri", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "natural compounds", "label": "natural compounds", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "prostate diseases", "label": "prostate diseases", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Medicinal plants", "label": "Medicinal plants", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "prostatitis", "label": "prostatitis", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "benign hypertrophy", "label": "benign hypertrophy", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "chronic pelvic pain syndrome", "label": "chronic pelvic pain syndrome", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Serenoa repens", "label": "Serenoa repens", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Urtica dioica", "label": "Urtica dioica", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Pygeum africanum", "label": "Pygeum africanum", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "treatment of prostate diseases", "label": "treatment of prostate diseases", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "pharmacological properties", "label": "pharmacological properties", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "treatment of prostatic diseases", "label": "treatment of prostatic diseases", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "diet", "label": "diet", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "incidence and development of prostatic diseases", "label": "incidence and development of prostatic diseases", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Mediterranean diet", "label": "Mediterranean diet", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "elements with anti-oxidant properties", "label": "elements with anti-oxidant properties", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "200c2bfe-239f-4d83-ae74-d3150f408603", "label": "200c2bfe-239f-4d83-ae74-d3150f408603", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "Arrigo F.G. Cicero", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Olta Allkanjari", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Gian Maria Busetto", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Tommaso Cai", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Gaetano Largan\u00e0", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Vittorio Magri", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Gianpaolo Perletti", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Francesco Saverio Robustelli Della Cuna", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Giorgio Ivan Russo", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Kostantinos Stamatiou", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "Alberto Trinchieri", "label": "AUTHOR_OF", "to": "Nutraceutical treatment and prevention of benign prostatic hyperplasia and prostate cancer", "width": 1}, {"arrows": "to", "from": "natural compounds", "label": "USED_FOR", "to": "prostate diseases", "width": 1}, {"arrows": "to", "from": "Medicinal plants", "label": "USED_FOR", "to": "prostatitis", "width": 1}, {"arrows": "to", "from": "Medicinal plants", "label": "USED_FOR", "to": "benign hypertrophy", "width": 1}, {"arrows": "to", "from": "Medicinal plants", "label": "USED_FOR", "to": "chronic pelvic pain syndrome", "width": 1}, {"arrows": "to", "from": "Medicinal plants", "label": "STUDIED_AND_USED", "to": "Serenoa repens", "width": 1}, {"arrows": "to", "from": "Medicinal plants", "label": "STUDIED_AND_USED", "to": "Urtica dioica", "width": 1}, {"arrows": "to", "from": "Medicinal plants", "label": "STUDIED_AND_USED", "to": "Pygeum africanum", "width": 1}, {"arrows": "to", "from": "Medicinal plants", "label": "USED_FOR", "to": "treatment of prostate diseases", "width": 1}, {"arrows": "to", "from": "pharmacological properties", "label": "SEARCHED_FOR", "to": "treatment of prostatic diseases", "width": 1}, {"arrows": "to", "from": "diet", "label": "PLAYS_ROLE_ON", "to": "incidence and development of prostatic diseases", "width": 1}, {"arrows": "to", "from": "Mediterranean diet", "label": "RICH_OF", "to": "elements with anti-oxidant properties", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
